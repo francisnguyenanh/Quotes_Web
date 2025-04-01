@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2 class="mb-3">View Quotes</h2>
+
+    <form method="POST" class="mb-4">
+        <div class="row g-2 align-items-center">
+            <div class="col-12 col-md-5">
+                <select name="category" class="form-select">
+                    <option value="">Select Category</option>
+                    {% for category in categories %}
+                    <option value="{{ category }}" {% if category == selected_category %}selected{% endif %}>
+                        {{ category }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-6 col-md-3">
+                <button type="submit" class="btn btn-primary w-100">Show by Category</button>
+            </div>
+            <div class="col-6 col-md-3">
+                <button type="submit" class="btn btn-success w-100" formnovalidate>Random Quote</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="mb-4">
+        <button id="bellButton" class="btn btn-secondary w-100 w-md-auto">Ring Bell</button>
+    </div>
+
+    {% if quote %}
+    <div class="card">
+        <div class="card-body">
+            <blockquote class="blockquote mb-0">
+                <p>{{ quote[1] }}</p>
+                <footer class="blockquote-footer">{{ quote[2] }}</footer>
+            </blockquote>
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-info" role="alert">
+        No quotes available yet. Please add some quotes first!
+    </div>
+    {% endif %}
+
+    <script>
+        document.getElementById('bellButton').addEventListener('click', function(e) {
+            e.preventDefault();
+            let audio = new Audio('/static/bell.mp3');
+            let count = 0;
+            const maxCount = 3;
+            const pauseBetween = 2000; // 2 giây nghỉ giữa các tiếng chuông
+
+            function playBell() {
+                if (count < maxCount) {
+                    audio.play();
+                    count++;
+                    audio.onended = function() {
+                        if (count < maxCount) {
+                            setTimeout(playBell, pauseBetween); // Chờ 2 giây rồi phát tiếp
+                        }
+                    };
+                }
+            }
+
+            playBell();
+
+            // Tạo audio mới cho mỗi lần phát để tránh xung đột
+            audio = new Audio('/static/bell.mp3');
+        });
+    </script>
+{% endblock %}

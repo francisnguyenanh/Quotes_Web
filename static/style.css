@@ -1,0 +1,98 @@
+body {
+    background-color: #3A4A3A;
+    min-height: 100vh;
+    color: #F0F5F0;
+    font-family: 'Georgia', serif;
+}
+
+.navbar {
+    background-color: #4A5A4A;
+}
+
+.navbar-brand, .nav-link {
+    color: #F0F5F0 !important;
+}
+
+.navbar-brand:hover, .nav-link:hover {
+    color: #C8D8C8 !important;
+}
+
+.card {
+    background-color: #5A6A5A;
+    border: none;
+    margin-top: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+blockquote {
+    font-size: 1.1em;
+    color: #F0F5F0;
+}
+
+.blockquote-footer {
+    color: #B8D0B8; /* Màu sáng hơn và nhạt hơn cho category */
+    font-style: italic; /* Thêm nghiêng để phân biệt */
+    font-size: 0.9em; /* Nhỏ hơn chút để tạo sự khác biệt */
+}
+
+.btn-primary {
+    background-color: #6A806A;
+    border-color: #6A806A;
+    color: #F0F5F0;
+}
+
+.btn-primary:hover {
+    background-color: #5A705A;
+    border-color: #5A705A;
+}
+
+.btn-success {
+    background-color: #869686;
+    border-color: #869686;
+    color: #F0F5F0;
+}
+
+.btn-success:hover {
+    background-color: #6A806A;
+    border-color: #6A806A;
+}
+
+.btn-danger {
+    background-color: #A57070;
+    border-color: #A57070;
+    color: #F0F5F0;
+}
+
+.btn-danger:hover {
+    background-color: #8A5555;
+    border-color: #8A5555;
+}
+
+.table {
+    background-color: #5A6A5A;
+    color: #F0F5F0;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #4A5A4A;
+}
+
+.alert-info {
+    background-color: #6A806A;
+    border-color: #5A705A;
+    color: #F0F5F0;
+}
+
+@media (max-width: 768px) {
+    .blockquote {
+        font-size: 1em;
+    }
+
+    .table {
+        font-size: 0.9em;
+    }
+
+    .btn {
+        padding: 0.375rem 0.75rem;
+    }
+}

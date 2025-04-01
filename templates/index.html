@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2 class="mb-3">Manage Quotes</h2>
+    <form method="POST" class="mb-4">
+        <div class="mb-3">
+            <textarea name="content" class="form-control" placeholder="Enter quote" rows="5" required></textarea>
+        </div>
+        <div class="mb-3">
+            <input type="text" name="category" class="form-control" placeholder="Enter category"
+                   list="categoryList" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100 w-md-auto">Add Quote</button>
+    </form>
+
+    <h3 class="mb-3">All Quotes</h3>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Quote</th>
+                    <th>Category</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for quote in quotes %}
+                <tr>
+                    <td>{{ quote[1] }}</td>
+                    <td>{{ quote[2] }}</td>
+                    <td>
+                        <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-primary btn-sm w-100 w-md-auto"
+                                    data-bs-toggle="modal" data-bs-target="#editModal{{ quote[0] }}"
+                                    style="max-width: 80px;">
+                                Edit
+                            </button>
+                            <a href="{{ url_for('delete', id=quote[0]) }}"
+                               class="btn btn-danger btn-sm w-100 w-md-auto"
+                               onclick="return confirm('Are you sure?')"
+                               style="max-width: 80px;">
+                                Delete
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                <!-- Modal cho mỗi quote -->
+                <div class="modal fade" id="editModal{{ quote[0] }}" tabindex="-1"
+                     aria-labelledby="editModalLabel{{ quote[0] }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content" style="background-color: #5A6A5A; color: #F0F5F0;">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editModalLabel{{ quote[0] }}">Edit Quote</h5>
+                                <button type="button" class="btn-close btn-close-white"
+                                        data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form method="POST" action="{{ url_for('edit', id=quote[0]) }}">
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <textarea name="content" class="form-control" rows="5"
+                                                  required>{{ quote[1] }}</textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <input type="text" name="category" class="form-control"
+                                               value="{{ quote[2] }}" list="categoryList" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Datalist chung cho cả trang -->
+    <datalist id="categoryList">
+        {% for category in categories %}
+        <option value="{{ category }}">
+        {% endfor %}
+    </datalist>
+{% endblock %}
