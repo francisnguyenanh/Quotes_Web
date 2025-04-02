@@ -21,6 +21,9 @@
             <input type="text" name="category" class="form-control" placeholder="Nhập nguồn"
                    list="categoryList" required>
         </div>
+        <div class="mb-3">
+            <input type="password" name="password" class="form-control" placeholder="Nhập mật khẩu" required>
+        </div>
         <button type="submit" class="btn btn-primary w-100 w-md-auto">Thêm Trích Dẫn</button>
     </form>
 
@@ -46,12 +49,11 @@
                                     style="max-width: 80px;">
                                 Sửa
                             </button>
-                            <a href="{{ url_for('delete', id=quote[0]) }}"
-                               class="btn btn-danger btn-sm w-100 w-md-auto"
-                               onclick="return confirm('Bạn có chắc chắn muốn xóa?')"
-                               style="max-width: 80px;">
+                            <button type="button" class="btn btn-danger btn-sm w-100 w-md-auto"
+                                    onclick="promptDelete({{ quote[0] }})"
+                                    style="max-width: 80px;">
                                 Xóa
-                            </a>
+                            </button>
                         </div>
                     </td>
                 </tr>
@@ -74,6 +76,10 @@
                                     <div class="mb-3">
                                         <input type="text" name="category" class="form-control"
                                                value="{{ quote[2] }}" list="categoryList" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <input type="password" name="password" class="form-control"
+                                               placeholder="Nhập mật khẩu" required>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -107,12 +113,11 @@
                     <td>{{ category }}</td>
                     <td>{{ count }}</td>
                     <td>
-                        <a href="{{ url_for('delete_category', category=category) }}"
-                           class="btn btn-danger btn-sm w-100 w-md-auto"
-                           onclick="return confirm('Bạn có chắc chắn muốn xóa nguồn này?')"
-                           style="max-width: 80px;">
+                        <button type="button" class="btn btn-danger btn-sm w-100 w-md-auto"
+                                onclick="promptDeleteCategory('{{ category }}')"
+                                style="max-width: 80px;">
                             Xóa
-                        </a>
+                        </button>
                     </td>
                 </tr>
                 {% endfor %}
@@ -126,4 +131,25 @@
         <option value="{{ category }}">
         {% endfor %}
     </datalist>
+
+    <!-- Script để hiển thị prompt nhập mật khẩu -->
+    <script>
+        function promptDelete(quoteId) {
+            let password = prompt("Nhập mật khẩu để xóa trích dẫn:");
+            if (password) {
+                if (confirm("Bạn có chắc chắn muốn xóa?")) {
+                    window.location.href = "/delete/" + quoteId + "?password=" + encodeURIComponent(password);
+                }
+            }
+        }
+
+        function promptDeleteCategory(category) {
+            let password = prompt("Nhập mật khẩu để xóa nguồn:");
+            if (password) {
+                if (confirm("Bạn có chắc chắn muốn xóa nguồn này?")) {
+                    window.location.href = "/delete_category/" + encodeURIComponent(category) + "?password=" + encodeURIComponent(password);
+                }
+            }
+        }
+    </script>
 {% endblock %}
