@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
-    <h2 class="mb-3">View Quotes</h2>
+    <h2 class="mb-3">Xem Trích Dẫn</h2>
 
     <form method="POST" class="mb-4">
         <div class="row g-2 align-items-center">
             <div class="col-12 col-md-5">
                 <select name="category" class="form-select">
-                    <option value="">Select Category</option>
+                    <option value="">Chọn Nguồn</option>
                     {% for category in categories %}
                     <option value="{{ category }}" {% if category == selected_category %}selected{% endif %}>
                         {{ category }}
@@ -15,16 +15,16 @@
                 </select>
             </div>
             <div class="col-6 col-md-3">
-                <button type="submit" class="btn btn-primary w-100">Show by Category</button>
+                <button type="submit" class="btn btn-primary w-100">Hiển Thị Theo Nguồn</button>
             </div>
             <div class="col-6 col-md-3">
-                <button type="submit" class="btn btn-success w-100" formnovalidate>Random Quote</button>
+                <button type="submit" class="btn btn-success w-100" formnovalidate>Trích Dẫn Ngẫu Nhiên</button>
             </div>
         </div>
     </form>
 
     <div class="mb-4">
-        <button id="bellButton" class="btn btn-secondary w-100 w-md-auto">Ring Bell</button>
+        <button id="bellButton" class="btn btn-secondary w-100 w-md-auto">Chuông Chánh Niệm</button>
     </div>
 
     {% if quote %}
@@ -38,7 +38,7 @@
     </div>
     {% else %}
     <div class="alert alert-info" role="alert">
-        No quotes available yet. Please add some quotes first!
+        Chưa có trích dẫn nào. Vui lòng thêm trích dẫn trước!
     </div>
     {% endif %}
 

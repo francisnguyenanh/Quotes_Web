@@ -1,25 +1,37 @@
 {% extends "base.html" %}
 {% block content %}
-    <h2 class="mb-3">Manage Quotes</h2>
+    <!-- Hiển thị thông báo -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <h2 class="mb-3">Quản Lý Trích Dẫn</h2>
     <form method="POST" class="mb-4">
         <div class="mb-3">
-            <textarea name="content" class="form-control" placeholder="Enter quote" rows="5" required></textarea>
+            <textarea name="content" class="form-control" placeholder="Nhập trích dẫn" rows="5" required></textarea>
         </div>
         <div class="mb-3">
-            <input type="text" name="category" class="form-control" placeholder="Enter category"
+            <input type="text" name="category" class="form-control" placeholder="Nhập nguồn"
                    list="categoryList" required>
         </div>
-        <button type="submit" class="btn btn-primary w-100 w-md-auto">Add Quote</button>
+        <button type="submit" class="btn btn-primary w-100 w-md-auto">Thêm Trích Dẫn</button>
     </form>
 
-    <h3 class="mb-3">All Quotes</h3>
+    <h3 class="mb-3">Tất Cả Trích Dẫn</h3>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Quote</th>
-                    <th>Category</th>
-                    <th>Action</th>
+                    <th>Trích Dẫn</th>
+                    <th>Nguồn</th>
+                    <th>Hành Động</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,13 +44,13 @@
                             <button type="button" class="btn btn-primary btn-sm w-100 w-md-auto"
                                     data-bs-toggle="modal" data-bs-target="#editModal{{ quote[0] }}"
                                     style="max-width: 80px;">
-                                Edit
+                                Sửa
                             </button>
                             <a href="{{ url_for('delete', id=quote[0]) }}"
                                class="btn btn-danger btn-sm w-100 w-md-auto"
-                               onclick="return confirm('Are you sure?')"
+                               onclick="return confirm('Bạn có chắc chắn muốn xóa?')"
                                style="max-width: 80px;">
-                                Delete
+                                Xóa
                             </a>
                         </div>
                     </td>
@@ -49,7 +61,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content" style="background-color: #5A6A5A; color: #F0F5F0;">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="editModalLabel{{ quote[0] }}">Edit Quote</h5>
+                                <h5 class="modal-title" id="editModalLabel{{ quote[0] }}">Sửa Trích Dẫn</h5>
                                 <button type="button" class="btn-close btn-close-white"
                                         data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
@@ -66,13 +78,43 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                            data-bs-dismiss="modal">Đóng</button>
+                                    <button type="submit" class="btn btn-primary">Lưu Thay Đổi</button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Phần quản lý nguồn -->
+    <h3 class="mb-3 mt-4">Quản Lý Nguồn</h3>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nguồn</th>
+                    <th>Số Trích Dẫn</th>
+                    <th>Hành Động</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for category, count in category_counts %}
+                <tr>
+                    <td>{{ category }}</td>
+                    <td>{{ count }}</td>
+                    <td>
+                        <a href="{{ url_for('delete_category', category=category) }}"
+                           class="btn btn-danger btn-sm w-100 w-md-auto"
+                           onclick="return confirm('Bạn có chắc chắn muốn xóa nguồn này?')"
+                           style="max-width: 80px;">
+                            Xóa
+                        </a>
+                    </td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
