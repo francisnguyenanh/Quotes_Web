@@ -23,8 +23,8 @@ body {
 .card {
     background-color: #5A6A5A;
     border: none;
-    margin-top: 20px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    position: relative; /* Đảm bảo card không bị trôi */
 }
 
 blockquote {
@@ -33,9 +33,15 @@ blockquote {
 }
 
 .blockquote-footer {
-    color: #B8D0B8; /* Màu sáng hơn và nhạt hơn cho category */
-    font-style: italic; /* Thêm nghiêng để phân biệt */
-    font-size: 0.9em; /* Nhỏ hơn chút để tạo sự khác biệt */
+    color: #B8D0B8;
+    font-style: italic;
+    font-size: 0.9em;
+}
+
+/* Đảm bảo nút Chuông Chánh Niệm không bị đè */
+#bellButton {
+    position: relative;
+    z-index: 1; /* Đưa nút lên trên nếu có chồng lấn */
 }
 
 .btn-primary {
@@ -60,24 +66,15 @@ blockquote {
     border-color: #6A806A;
 }
 
-.btn-danger {
-    background-color: #A57070;
-    border-color: #A57070;
-    color: #F0F5F0;
-}
-
-.btn-danger:hover {
-    background-color: #8A5555;
-    border-color: #8A5555;
-}
-
-.table {
+.btn-secondary {
     background-color: #5A6A5A;
+    border-color: #5A6A5A;
     color: #F0F5F0;
 }
 
-.table-striped tbody tr:nth-of-type(odd) {
+.btn-secondary:hover {
     background-color: #4A5A4A;
+    border-color: #4A5A4A;
 }
 
 .alert-info {
@@ -91,16 +88,11 @@ blockquote {
         font-size: 1em;
     }
 
-    .table {
-        font-size: 0.9em;
-    }
-
     .btn {
         padding: 0.375rem 0.75rem;
     }
 }
 
-/* Đảm bảo font áp dụng cho tất cả phần tử nhập liệu */
 input, textarea, select, button, .modal-content {
     font-family: 'Times New Roman', serif;
 }
