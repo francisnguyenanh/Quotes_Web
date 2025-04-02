@@ -1,10 +1,18 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 import sqlite3
 import random
+from jinja2 import Environment
+from markupsafe import Markup
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Cần cho flash messages
 app.config['JSON_AS_ASCII'] = False  # Đảm bảo JSON không mã hóa ASCII
+
+# Thêm filter nl2br
+def nl2br(value):
+    return Markup(value.replace('\n', '<br>'))
+
+app.jinja_env.filters['nl2br'] = nl2br
 
 def init_db():
     conn = sqlite3.connect('quotes.db')

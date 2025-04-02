@@ -37,7 +37,7 @@
             <tbody>
                 {% for quote in quotes %}
                 <tr>
-                    <td>{{ quote[1] }}</td>
+                    <td>{{ quote[1] | nl2br | safe }}</td>
                     <td>{{ quote[2] }}</td>
                     <td>
                         <div class="d-flex gap-2">
