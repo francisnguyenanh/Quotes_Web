@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 app.config['JSON_AS_ASCII'] = False
 
-ADMIN_PASSWORD = "2312"
+ADMIN_PASSWORD = "1"
 
 def nl2br(value):
     return Markup(value.replace('\n', '<br>'))
