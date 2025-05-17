@@ -72,7 +72,7 @@ def manage():
         password = request.form.get('password')
         if not check_password(password):
             flash("Mật khẩu không đúng!", "error")
-            c.execute("SELECT * FROM quotes")
+            c.execute("SELECT * FROM quotes ORDER BY content")
             quotes = c.fetchall()
             c.execute("SELECT DISTINCT category FROM quotes")
             categories = [row[0] for row in c.fetchall()]
@@ -90,9 +90,9 @@ def manage():
             existing_quotes = [row[0] for row in c.fetchall()]
             for existing_content in existing_quotes:
                 similarity = difflib.SequenceMatcher(None, content.lower(), existing_content.lower()).ratio()
-                if similarity >= 0.95:
-                    flash("Trích dẫn này quá giống (≥95%) với một trích dẫn đã tồn tại! Vui lòng nhập trích dẫn khác.", "error")
-                    c.execute("SELECT * FROM quotes")
+                if similarity >= 0.8:
+                    flash("Trích dẫn này quá giống (≥80%) với một trích dẫn đã tồn tại! Vui lòng nhập trích dẫn khác.", "error")
+                    c.execute("SELECT * FROM quotes ORDER BY content")
                     quotes = c.fetchall()
                     c.execute("SELECT DISTINCT category FROM quotes")
                     categories = [row[0] for row in c.fetchall()]
@@ -106,7 +106,7 @@ def manage():
             conn.commit()
             flash("Trích dẫn đã được thêm thành công!", "success")
 
-    c.execute("SELECT * FROM quotes")
+    c.execute("SELECT * FROM quotes ORDER BY content")
     quotes = c.fetchall()
     c.execute("SELECT DISTINCT category FROM quotes")
     categories = [row[0] for row in c.fetchall()]
