@@ -3,6 +3,7 @@ import sqlite3
 import random
 from jinja2 import Environment
 from markupsafe import Markup
+import difflib
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -81,8 +82,26 @@ def manage():
             return render_template('index.html', quotes=quotes, categories=categories, category_counts=category_counts)
 
         if 'content' in request.form and 'category' in request.form:
-            content = request.form['content']
-            category = request.form['category']
+            content = request.form['content'].strip()
+            category = request.form['category'].strip()
+
+            # Kiểm tra độ tương đồng với các trích dẫn hiện có
+            c.execute("SELECT content FROM quotes")
+            existing_quotes = [row[0] for row in c.fetchall()]
+            for existing_content in existing_quotes:
+                similarity = difflib.SequenceMatcher(None, content.lower(), existing_content.lower()).ratio()
+                if similarity >= 0.95:
+                    flash("Trích dẫn này quá giống (≥95%) với một trích dẫn đã tồn tại! Vui lòng nhập trích dẫn khác.", "error")
+                    c.execute("SELECT * FROM quotes")
+                    quotes = c.fetchall()
+                    c.execute("SELECT DISTINCT category FROM quotes")
+                    categories = [row[0] for row in c.fetchall()]
+                    c.execute("SELECT category, COUNT(*) as count FROM quotes GROUP BY category")
+                    category_counts = c.fetchall()
+                    conn.close()
+                    return render_template('index.html', quotes=quotes, categories=categories, category_counts=category_counts)
+
+            # Nếu không trùng, chèn trích dẫn mới
             c.execute("INSERT INTO quotes (content, category) VALUES (?, ?)", (content, category))
             conn.commit()
             flash("Trích dẫn đã được thêm thành công!", "success")
