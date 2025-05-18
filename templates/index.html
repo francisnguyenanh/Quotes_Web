@@ -21,9 +21,11 @@
             <input type="text" name="category" class="form-control" placeholder="Nhập nguồn"
                    list="categoryList" required>
         </div>
+        {% if require_password %}
         <div class="mb-3">
             <input type="password" name="password" class="form-control" placeholder="Nhập mật khẩu" required>
         </div>
+        {% endif %}
         <button type="submit" class="btn btn-primary w-100 w-md-auto">Thêm Trích Dẫn</button>
     </form>
 
@@ -82,10 +84,12 @@
                             <input type="text" name="category" id="editCategory" class="form-control"
                                    list="categoryList" required>
                         </div>
+                        {% if require_password %}
                         <div class="mb-3">
                             <input type="password" name="password" id="editPassword" class="form-control"
                                    placeholder="Nhập mật khẩu" required>
                         </div>
+                        {% endif %}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
@@ -150,7 +154,9 @@
                     document.getElementById('editId').value = id;
                     document.getElementById('editContent').value = content;
                     document.getElementById('editCategory').value = category;
+                    {% if require_password %}
                     document.getElementById('editPassword').value = '';
+                    {% endif %}
 
                     // Cập nhật action của form
                     editForm.action = `/edit/${id}`;
@@ -162,22 +168,34 @@
 
             // Xử lý xóa trích dẫn
             function promptDelete(quoteId) {
+                {% if require_password %}
                 let password = prompt("Nhập mật khẩu để xóa trích dẫn:");
                 if (password) {
                     if (confirm("Bạn có chắc chắn muốn xóa?")) {
                         window.location.href = "/delete/" + quoteId + "?password=" + encodeURIComponent(password);
                     }
                 }
+                {% else %}
+                if (confirm("Bạn có chắc chắn muốn xóa?")) {
+                    window.location.href = "/delete/" + quoteId;
+                }
+                {% endif %}
             }
 
             // Xử lý xóa nguồn
             function promptDeleteCategory(category) {
+                {% if require_password %}
                 let password = prompt("Nhập mật khẩu để xóa nguồn:");
                 if (password) {
                     if (confirm("Bạn có chắc chắn muốn xóa nguồn này?")) {
                         window.location.href = "/delete_category/" + encodeURIComponent(category) + "?password=" + encodeURIComponent(password);
                     }
                 }
+                {% else %}
+                if (confirm("Bạn có chắc chắn muốn xóa nguồn này?")) {
+                    window.location.href = "/delete_category/" + encodeURIComponent(category);
+                }
+                {% endif %}
             }
 
             window.promptDelete = promptDelete;
